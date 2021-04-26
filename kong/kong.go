@@ -4,17 +4,22 @@ import (
 	"context"
 	"encoding/json"
 	"io"
+	"net"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
 	"os"
+	"time"
 
 	"github.com/pkg/errors"
 
 	"github.com/kong/go-kong/kong/custom"
 )
 
-const defaultBaseURL = "http://localhost:8001"
+const (
+	defaultBaseURL = "http://localhost:8001"
+	defaultTimeout = 10 * time.Second
+)
 
 var pageSize = 1000
 
@@ -87,7 +92,16 @@ type Status struct {
 // NewClient returns a Client which talks to Admin API of Kong
 func NewClient(baseURL *string, client *http.Client) (*Client, error) {
 	if client == nil {
-		client = http.DefaultClient
+		transport := &http.Transport{
+			DialContext: (&net.Dialer{
+				Timeout: defaultTimeout,
+			}).DialContext,
+			TLSHandshakeTimeout: defaultTimeout,
+		}
+		client = &http.Client{
+			Timeout:   defaultTimeout,
+			Transport: transport,
+		}
 	}
 	kong := new(Client)
 	kong.client = client
