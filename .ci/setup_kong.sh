@@ -22,7 +22,8 @@ function setup_kong(){
   URL="https://download.konghq.com/gateway-2.x-ubuntu-xenial/pool/all/k/kong/kong_${KONG_VERSION}_amd64.deb"
   fi
 
-  /usr/bin/curl -sL $URL -o kong.deb
+  echo "/usr/bin/curl -svL $URL -o kong.deb"
+  /usr/bin/curl -svL $URL -o kong.deb
 }
 
 function setup_kong_enterprise(){
@@ -42,7 +43,7 @@ function setup_kong_enterprise(){
   URL="https://download.konghq.com/gateway-2.x-ubuntu-xenial/pool/all/k/kong-enterprise-edition/kong-enterprise-edition_${KONG_VERSION}_all.deb"
   fi
 
-  RESPONSE_CODE=$(/usr/bin/curl -sL \
+  RESPONSE_CODE=$(/usr/bin/curl -svL \
     -w "%{http_code}" \
     -u $KONG_ENTERPRISE_REPO_USERNAME:$KONG_ENTERPRISE_REPO_PASSSWORD \
     $URL -o kong.deb)
