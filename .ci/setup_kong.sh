@@ -7,7 +7,7 @@ sudo apt-get update
 sudo apt-get install openssl libpcre3 procps perl wget zlibc
 
 function setup_kong(){
-  SWITCH="1.3.200"
+  SWITCH="1.3.000"
   SWITCH2="2.0.000"
 
   URL="https://download.konghq.com/gateway-1.x-ubuntu-xenial/pool/all/k/kong/kong_${KONG_VERSION}_all.deb"
